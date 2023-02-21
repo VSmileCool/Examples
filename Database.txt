@@ -1,0 +1,99 @@
+import { Sequelize, Model, DataTypes } from 'sequelize';
+
+const sequelize = new Sequelize('postgres://username:password@localhost:5432/mydatabase');
+
+class User extends Model<UserAttributes> implements UserAttributes {
+  public id!: number;
+  public name!: string;
+  public secondName!: string;
+  public surname!: string;
+  public certificate!: string;
+  public institute!: number;
+  public rights!: string;
+  public email!: string;
+  public password!: string;
+}
+
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    secondName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    surname: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    certificate: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    institute: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Institutes',
+        key: 'id',
+      },
+    },
+    rights: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'User',
+  },
+);
+
+class Institute extends Model<InstituteAttributes> implements InstituteAttributes {
+  public id!: number;
+  public name!: string;
+  public latitude!: number;
+  public longitude!: number;
+}
+
+Institute.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    latitude: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    longitude: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'Institute',
+  },
+);
